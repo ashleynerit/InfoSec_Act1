@@ -556,16 +556,20 @@ button {
 /* ADD CATEGORY BUTTON */
 
 .add-category {
-    display: block;
-    margin: 8px 0 0 auto;
+    position: fixed;
+    right: max(24px, env(safe-area-inset-right));
+    bottom: max(24px, env(safe-area-inset-bottom));
+    z-index: 5;
     border: 0;
     border-radius: 40px;
     background: var(--navy);
     color: #fff;
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 900;
-    padding: 15px 34px;
-    min-width: 256px;
+    padding: 14px 26px;
+    min-height: 54px;
+    box-shadow: 0 6px 20px #17284b40;
+    cursor: pointer;
 }
 
 .add-category:hover {
@@ -1112,8 +1116,11 @@ button {
     /* ADD CATEGORY */
 
     .add-category {
-        font-size: 19px;
-        min-width: 210px;
+        right: max(16px, env(safe-area-inset-right));
+        bottom: max(16px, env(safe-area-inset-bottom));
+        font-size: 15px;
+        padding: 12px 20px;
+        min-height: 48px;
     }
 
     .item-view-heading h2 {
