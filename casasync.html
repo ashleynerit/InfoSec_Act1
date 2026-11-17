@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CasaSync — Household Inventory</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Connect CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<section class="screen auth active" id="signup">
+  <aside class="brand-panel"><div class="brand"><div class="brand-house"></div><div class="brand-name">Casa<span>Sync</span></div></div><div class="tagline">KEEP YOUR HOUSEHOLD IN SYNC</div></aside>
+  <main class="auth-panel"><form class="auth-form" id="signupForm">
+    <h1>Create an account</h1>
+    <div class="field"><label for="fullName">Full name</label><input id="fullName" placeholder="Ex. Juan Dela Cruz" autocomplete="name" required></div>
+    <div class="field"><label for="signupEmail">Email</label><input id="signupEmail" type="email" placeholder="your email@gmail.com" autocomplete="email" required></div>
+    <div class="field"><label for="signupPassword">Password</label><input id="signupPassword" type="password" minlength="8" placeholder="Min. of 8 characters" required></div>
+    <div class="field"><label for="confirmPassword">Confirm password</label><input id="confirmPassword" type="password" minlength="8" placeholder="Min. of 8 characters" required></div>
+    <div class="message" id="signupMessage"></div>
+    <button class="auth-submit" type="submit">Create account</button>
+    <p class="auth-switch"><button type="button" onclick="showScreen('login')">Already have an account? Log in</button></p>
+  </form></main>
+</section>
+
+<section class="screen auth" id="login">
+  <aside class="brand-panel"><div class="brand"><div class="brand-house"></div><div class="brand-name">Casa<span>Sync</span></div></div><div class="tagline">KEEP YOUR HOUSEHOLD IN SYNC</div></aside>
+  <main class="auth-panel"><form class="auth-form" id="loginForm">
+    <h1>Log in your account</h1>
+    <div class="field"><label for="loginEmail">Email</label><input id="loginEmail" type="email" placeholder="your email@gmail.com" autocomplete="email" required></div>
+    <div class="field"><label for="loginPassword">Password</label><input id="loginPassword" type="password" placeholder="Min. of 8 characters" required></div>
+    <button class="forgot" type="button" onclick="alert('Password recovery can be connected to your email service.')">Forgot password</button>
+    <div class="message" id="loginMessage"></div>
+    <button class="auth-submit" type="submit">Log in</button>
+    <p class="auth-switch"><button type="button" onclick="showScreen('signup')">Don’t have an account? Sign up</button></p>
+  </form></main>
+</section>
+
+<section class="screen" id="main">
+  <header class="topbar">
+    <button class="hamburger" type="button" aria-label="Open menu" aria-controls="navigationMenu" aria-expanded="false" onclick="showMenu()"><span></span><span></span><span></span></button>
+    <h1 id="pageTitle">INVENTORY</h1>
+    <label class="search"><span>⌕</span><input id="searchInput" placeholder="Search" aria-label="Search categories"></label>
+    <nav class="navigation-menu" id="navigationMenu" aria-label="Main navigation" hidden>
+      <button class="menu-item" type="button">Profile</button>
+      <button class="menu-item" type="button" onclick="goToInventory()">Inventory</button>
+      <button class="menu-item" type="button" onclick="goToCategories()">Categories</button>
+      <button class="menu-item" type="button">Archived</button>
+      <button class="menu-item logout-item" type="button" onclick="logOut()">Log out</button>
+    </nav>
+  </header>
+  
+  <main class="main-content" id="inventoryHome">
+    <div class="greeting"><h2 id="greetingName">Hello!</h2><p>This is your household inventory where you can monitor all your necessities in one place.</p></div>
+  </main>
+
+  <main class="main-content category-page" id="categoriesPage" hidden>
+    <section id="categoryOverview">
+      <h2 class="section-title">Top priorities</h2>
+      <div class="category-grid priority-grid" id="priorityGrid">
+        <button class="category grocery" data-name="Groceries"><span>GROCERIES</span><span class="cat-icon">🧺</span></button>
+        <button class="category school" data-name="School Supplies"><span>SCHOOL SUPPLIES</span><span class="cat-icon">✏️</span></button>
+        <button class="category skin" data-name="Skincare"><span>SKINCARE</span><span class="cat-icon">🧴</span></button>
+      </div>
+      <h2 class="section-title">All categories</h2>
+      <div class="category-grid all-grid" id="allGrid">
+        <button class="category grocery" data-name="Groceries">
+          <span>GROCERIES</span><span class="cat-icon">🧺</span>
+        </button>
+        <button class="category school" data-name="School Supplies">
+          <span>SCHOOL SUPPLIES</span>
+          <span class="cat-icon">✏️</span>
+        </button>
+        <button class="category skin" data-name="Skincare">
+          <span>SKINCARE</span>
+          <span class="cat-icon">🧴</span>
+        </button>
+        <button class="category toiletry" data-name="Toiletries">
+          <span>TOILETRIES</span>
+          <span class="cat-icon">🧼</span>
+        </button>
+      </div>
+      <button class="add-category" onclick="openModal()">ADD CATEGORY</button>
+    </section>
+
+    <section class="item-view" id="itemView" hidden>
+      <button class="back-button" type="button" onclick="backToCategories()">← All categories</button>
+      <div class="status-legend" aria-label="Item status legend">
+        <span><img class="status-icon" src="assets/icons/low_stocks.png" alt=""> Low-stock limit is set per item</span>
+        <span><img class="status-icon" src="assets/icons/expiring.png" alt=""> Expiration alert is set per item</span>
+      </div>
+      <div class="item-view-heading">
+        <h2 id="selectedCategoryName"></h2>
+        <button class="add-item" type="button" onclick="openItemModal()">ADD ITEM</button>
+      </div>
+      <div class="item-list" id="itemList"></div>
+    </section>
+  </main>
+</section>
+
+<div class="overlay" id="categoryModal">
+  <form class="modal category-modal" id="categoryForm">
+    <h3>Add a category</h3>
+    <label for="categoryName">Category name</label>
+    <input id="categoryName" placeholder="e.g. Pet supplies" maxlength="24" required>
+    <label for="categoryIcon">Choose an icon</label>
+    <select id="categoryIcon" required>
+      <option value="📦">📦 Package</option>
+      <option value="🧺">🧺 Basket</option>
+      <option value="🛒">🛒 Cart</option>
+      <option value="🍎">🍎 Food</option>
+      <option value="🥫">🥫 Canned goods</option>
+      <option value="🧴">🧴 Bottle</option>
+      <option value="🧼">🧼 Soap</option>
+      <option value="🧹">🧹 Cleaning</option>
+      <option value="🪴">🪴 Plant</option>
+      <option value="🐾">🐾 Pet</option>
+      <option value="👕">👕 Clothing</option>
+      <option value="✏️">✏️ Supplies</option>
+      <option value="🧰">🧰 Tools</option>
+      <option value="💊">💊 Medicine</option>
+      <option value="🎁">🎁 Other</option>
+    </select>
+    <label for="categoryColor">Choose a color</label>
+    <input id="categoryColor" type="color" value="#a8dfbf">
+    <div class="category-preview" id="categoryPreview" aria-label="Category preview">
+      <span id="categoryPreviewName">CATEGORY</span>
+      <span class="cat-icon" id="categoryPreviewIcon">📦</span>
+    </div>
+    <div class="modal-actions">
+      <button class="cancel" type="button" onclick="closeModal()">Cancel</button>
+      <button class="save" type="submit">Add category</button>
+    </div>
+  </form>
+</div>
+<div class="overlay" id="itemModal">
+  <form class="modal item-modal" id="itemForm">
+    <h3 id="itemModalTitle">Add an item</h3>
+    <div class="item-form-layout">
+      <label class="photo-upload" for="itemPhoto">
+        <img id="itemPhotoPreview" alt="Selected item photo" hidden>
+        <span class="photo-upload-placeholder" id="itemPhotoPlaceholder"><span aria-hidden="true">▧</span><small>UPLOAD PHOTO</small></span>
+        <input id="itemPhoto" type="file" accept="image/*">
+      </label>
+      <div class="item-form-fields">
+        <label for="itemName">Item name</label>
+        <input id="itemName" maxlength="50" placeholder="e.g. Milk" required>
+        <label for="itemQuantity">Quantity</label>
+        <input id="itemQuantity" type="number" min="0" step="1" placeholder="0" required>
+        <label for="itemLowStockThreshold">Low-stock alert at</label>
+        <input id="itemLowStockThreshold" type="number" min="0" step="1" placeholder="2 items or fewer" required>
+        <label for="itemExpiration">Expiration date</label>
+        <input id="itemExpiration" type="date" required>
+        <label for="itemExpiringDays">Expiring alert (days before)</label>
+        <input id="itemExpiringDays" type="number" min="0" step="1" placeholder="15 days" required>
+      </div>
+    </div>
+    <p class="photo-note" id="photoNote">Choose an item photo (up to 2 MB).</p>
+    <div class="modal-actions">
+      <button class="cancel" type="button" onclick="closeItemModal()">Cancel</button>
+      <button class="save" type="submit">Save item</button>
+    </div>
+  </form>
+</div>
+    <!-- Connect JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
